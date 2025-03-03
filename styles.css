@@ -2,180 +2,213 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
-    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-    color: #fff;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
-    background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
-}
 
-@keyframes gradient {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
 }
 
 .container {
-    max-width: 800px;
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
+    max-width: 500px;
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 15px;
     padding: 30px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
 }
 
 h1 {
-    font-family: 'Montserrat', sans-serif;
+    text-align: center;
     margin-bottom: 30px;
-    font-size: 2.5rem;
-    color: #e94560;
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    color: #4a4a4a;
+    font-size: 2rem;
+    position: relative;
 }
 
-.input-section {
-    margin-bottom: 30px;
-    background-color: rgba(255, 255, 255, 0.05);
-    padding: 20px;
-    border-radius: 10px;
+h1 i {
+    color: #ffd700;
+    margin-left: 10px;
+    animation: twinkle 1.5s infinite alternate;
 }
 
-.form-group {
-    margin-bottom: 15px;
-    text-align: left;
+@keyframes twinkle {
+    from {
+        opacity: 0.5;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+.input-group {
+    margin-bottom: 20px;
 }
 
 label {
     display: block;
-    margin-bottom: 5px;
-    font-weight: 300;
-    font-size: 1.1rem;
+
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: 500;
+
 }
 
 input {
     width: 100%;
-    padding: 12px;
-    border: none;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-    color: #fff;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
     font-size: 1rem;
     transition: all 0.3s;
 }
 
 input:focus {
     outline: none;
-    background-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 0 0 2px rgba(233, 69, 96, 0.5);
+    border-color: #764ba2;
+    box-shadow: 0 0 0 2px rgba(118, 75, 162, 0.2);
 }
 
 button {
-    background-color: #e94560;
-    color: white;
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border: none;
-    padding: 12px 25px;
-    border-radius: 5px;
-    cursor: pointer;
+    border-radius: 8px;
+    color: white;
     font-size: 1rem;
-    font-weight: bold;
+    font-weight: 600;
+    cursor: pointer;
     transition: all 0.3s;
-    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 button:hover {
-    background-color: #d13652;
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.result-section {
-    display: none;
-    background-color: rgba(255, 255, 255, 0.05);
-    padding: 20px;
-    border-radius: 10px;
+button:active {
+    transform: translateY(0);
+}
+
+.result {
     margin-top: 20px;
+}
+
+.result-card {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+    border-radius: 12px;
+    padding: 25px;
     text-align: center;
-}
-
-.result-section.active {
-    display: block;
-}
-
-.zodiac-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.1);
-    margin-top: 20px;
-}
-
-.zodiac-image {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    margin-bottom: 15px;
-    border: 3px solid #e94560;
-    padding: 5px;
-    background-color: rgba(255, 255, 255, 0.1);
     transition: all 0.5s;
+    transform-origin: center;
 }
 
-.zodiac-image:hover {
-    transform: scale(1.1) rotate(5deg);
+/* Optimize the date picker styles for better performance */
+.date-picker-container {
+    display: flex;
+    gap: 10px;
+    width: 100%;
 }
 
-.user-info {
-    margin-bottom: 15px;
-    font-size: 1.2rem;
+.date-picker-container select {
+    flex: 1;
+    padding: 12px 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: white;
+    cursor: pointer;
+    /* Simplified transition for better performance */
+    transition: border-color 0.15s ease;
+    /* Use a simpler dropdown arrow */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23764ba2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 1em;
+    /* Add hardware acceleration */
+    transform: translateZ(0);
+    -webkit-font-smoothing: antialiased;
 }
 
-.zodiac-name {
+.date-picker-container select:focus {
+    outline: none;
+    border-color: #764ba2;
+    /* Simplified box-shadow for better performance */
+    box-shadow: 0 0 0 1px rgba(118, 75, 162, 0.2);
+}
+
+.date-picker-container select:hover {
+    border-color: #764ba2;
+}
+
+/* Make sure the select elements are responsive on mobile */
+@media (max-width: 480px) {
+    .date-picker-container {
+        flex-direction: column;
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+    animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.zodiac-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px;
+    color: white;
+    font-size: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+#zodiac-name {
     font-size: 1.8rem;
-    font-weight: bold;
-    color: #e94560;
+    color: #4a4a4a;
     margin-bottom: 10px;
 }
 
-.zodiac-date {
-    font-size: 1rem;
-    color: #ccc;
-    margin-bottom: 15px;
+#zodiac-date, #age-result, #zodiac-traits {
+    color: #666;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
 }
 
-.zodiac-description {
-    line-height: 1.6;
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-@media (max-width: 600px) {
-    .container {
-        padding: 15px;
-    }
-    
-    h1 {
-        font-size: 2rem;
-    }
-    
-    .zodiac-image {
-        width: 120px;
-        height: 120px;
-    }
+#zodiac-traits {
+    font-style: italic;
 }

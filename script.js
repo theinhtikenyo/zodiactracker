@@ -1,190 +1,250 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const submitBtn = document.getElementById('submit-btn');
-    const resultSection = document.getElementById('result-section');
-    
-    // Zodiac sign data
+
+    // Get DOM elements
+    const nameInput = document.getElementById('name');
+    const monthSelect = document.getElementById('month-select');
+    const daySelect = document.getElementById('day-select');
+    const yearSelect = document.getElementById('year-select');
+    const checkButton = document.getElementById('check-btn');
+    const resultCard = document.getElementById('result-card');
+    const zodiacIcon = document.getElementById('zodiac-icon');
+    const zodiacName = document.getElementById('zodiac-name');
+    const zodiacDate = document.getElementById('zodiac-date');
+    const ageResult = document.getElementById('age-result');
+    const zodiacTraits = document.getElementById('zodiac-traits');
+
+    // Initialize the date picker
+    initDatePicker();
+
+    // Zodiac signs data
     const zodiacSigns = [
         {
             name: "Aries",
-            symbol: "Ram",
-            element: "Fire",
-            dates: "March 21 - April 19",
-            image: "images/aries.svg",
-            description: "Aries is the first sign of the zodiac. Those born under this sign are passionate, motivated, and confident leaders who build community with their cheerful disposition and relentless determination."
+            startDate: { month: 3, day: 21 },
+            endDate: { month: 4, day: 19 },
+            icon: "fas fa-fire",
+            traits: "Energetic, confident, impulsive, competitive"
         },
         {
             name: "Taurus",
-            symbol: "Bull",
-            element: "Earth",
-            dates: "April 20 - May 20",
-            image: "images/taurus.svg",
-            description: "Taurus is an earth sign represented by the bull. Like their celestial spirit animal, Taureans enjoy relaxing in serene, bucolic environments surrounded by soft sounds, soothing aromas, and succulent flavors."
+            startDate: { month: 4, day: 20 },
+            endDate: { month: 5, day: 20 },
+            icon: "fas fa-seedling",
+            traits: "Reliable, patient, practical, devoted"
         },
         {
             name: "Gemini",
-            symbol: "Twins",
-            element: "Air",
-            dates: "May 21 - June 20",
-            image: "images/gemini.svg",
-            description: "Gemini is represented by the twins, and these air signs were interested in so many pursuits that they had to double themselves. They're sociable, communicative, and ready for fun."
+            startDate: { month: 5, day: 21 },
+            endDate: { month: 6, day: 20 },
+            icon: "fas fa-user-friends",
+            traits: "Adaptable, outgoing, curious, inconsistent"
         },
         {
             name: "Cancer",
-            symbol: "Crab",
-            element: "Water",
-            dates: "June 21 - July 22",
-            image: "images/cancer.svg",
-            description: "Cancer is a cardinal water sign. Represented by the crab, this oceanic crustacean seamlessly weaves between the sea and shore representing Cancer's ability to exist in both emotional and material realms."
+            startDate: { month: 6, day: 21 },
+            endDate: { month: 7, day: 22 },
+            icon: "fas fa-water",
+            traits: "Loyal, emotional, sympathetic, protective"
         },
         {
             name: "Leo",
-            symbol: "Lion",
-            element: "Fire",
-            dates: "July 23 - August 22",
-            image: "images/leo.svg",
-            description: "Roll out the red carpet because Leo has arrived. Leo is represented by the lion and these spirited fire signs are the kings and queens of the celestial jungle. They're delighted to embrace their royal status."
+            startDate: { month: 7, day: 23 },
+            endDate: { month: 8, day: 22 },
+            icon: "fas fa-crown",
+            traits: "Creative, passionate, generous, dominant"
         },
         {
             name: "Virgo",
-            symbol: "Virgin",
-            element: "Earth",
-            dates: "August 23 - September 22",
-            image: "images/virgo.svg",
-            description: "Virgo is an earth sign historically represented by the goddess of wheat and agriculture. This earth sign is practical, analytical, and has a deep sense of humanity."
+            startDate: { month: 8, day: 23 },
+            endDate: { month: 9, day: 22 },
+            icon: "fas fa-leaf",
+            traits: "Analytical, kind, hardworking, critical"
         },
         {
             name: "Libra",
-            symbol: "Scales",
-            element: "Air",
-            dates: "September 23 - October 22",
-            image: "images/libra.svg",
-            description: "Libra is an air sign represented by the scales, an association that reflects Libra's fixation on balance and harmony. These air signs are the aesthetes of the zodiac: ruled by Venus, they're informed by beauty and art."
+            startDate: { month: 9, day: 23 },
+            endDate: { month: 10, day: 22 },
+            icon: "fas fa-balance-scale",
+            traits: "Diplomatic, gracious, fair-minded, social"
         },
         {
             name: "Scorpio",
-            symbol: "Scorpion",
-            element: "Water",
-            dates: "October 23 - November 21",
-            image: "images/scorpio.svg",
-            description: "Scorpio is one of the most misunderstood signs of the zodiac. Because of its incredible passion and power, Scorpio is often mistaken for a fire sign. In fact, Scorpio is a water sign that derives its strength from the psychic, emotional realm."
+            startDate: { month: 10, day: 23 },
+            endDate: { month: 11, day: 21 },
+            icon: "fas fa-dragon",
+            traits: "Passionate, stubborn, resourceful, brave"
         },
         {
             name: "Sagittarius",
-            symbol: "Archer",
-            element: "Fire",
-            dates: "November 22 - December 21",
-            image: "images/sagittarius.svg",
-            description: "Represented by the archer, Sagittarians are always on a quest for knowledge. The last fire sign of the zodiac, Sagittarius launches its many pursuits like blazing arrows, chasing after geographical, intellectual, and spiritual adventures."
+            startDate: { month: 11, day: 22 },
+            endDate: { month: 12, day: 21 },
+            icon: "fas fa-horse",
+            traits: "Generous, idealistic, great sense of humor"
         },
         {
             name: "Capricorn",
-            symbol: "Goat",
-            element: "Earth",
-            dates: "December 22 - January 19",
-            image: "images/capricorn.svg",
-            description: "The last earth sign of the zodiac, Capricorn is represented by the sea goat, a mythological creature with the body of a goat and the tail of a fish. Accordingly, Capricorns are skilled at navigating both the material and emotional realms."
+            startDate: { month: 12, day: 22 },
+            endDate: { month: 1, day: 19 },
+            icon: "fas fa-mountain",
+            traits: "Responsible, disciplined, self-control"
         },
         {
             name: "Aquarius",
-            symbol: "Water Bearer",
-            element: "Air",
-            dates: "January 20 - February 18",
-            image: "images/aquarius.svg",
-            description: "Despite the 'aqua' in its name, Aquarius is actually the last air sign of the zodiac. Innovative, progressive, and shamelessly revolutionary, Aquarius is represented by the water bearer, the mystical healer who bestows water, or life, upon the land."
+            startDate: { month: 1, day: 20 },
+            endDate: { month: 2, day: 18 },
+            icon: "fas fa-tint",
+            traits: "Progressive, original, independent, humanitarian"
         },
         {
             name: "Pisces",
-            symbol: "Fish",
-            element: "Water",
-            dates: "February 19 - March 20",
-            image: "images/pisces.svg",
-            description: "Pisces, a water sign, is the last constellation of the zodiac. It's symbolized by two fish swimming in opposite directions, representing the constant division of Pisces's attention between fantasy and reality."
+            startDate: { month: 2, day: 19 },
+            endDate: { month: 3, day: 20 },
+            icon: "fas fa-fish",
+            traits: "Compassionate, artistic, intuitive, gentle"
         }
     ];
-    
-    // Function to determine zodiac sign based on birthdate
-    function getZodiacSign(date) {
-        const month = date.getMonth() + 1;
-        const day = date.getDate();
+
+    // Function to initialize the date picker
+    function initDatePicker() {
+        // Create a document fragment for better performance
+        const yearFragment = document.createDocumentFragment();
         
-        if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) {
-            return zodiacSigns[0]; // Aries
-        } else if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) {
-            return zodiacSigns[1]; // Taurus
-        } else if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) {
-            return zodiacSigns[2]; // Gemini
-        } else if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) {
-            return zodiacSigns[3]; // Cancer
-        } else if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) {
-            return zodiacSigns[4]; // Leo
-        } else if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) {
-            return zodiacSigns[5]; // Virgo
-        } else if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) {
-            return zodiacSigns[6]; // Libra
-        } else if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) {
-            return zodiacSigns[7]; // Scorpio
-        } else if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) {
-            return zodiacSigns[8]; // Sagittarius
-        } else if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) {
-            return zodiacSigns[9]; // Capricorn
-        } else if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) {
-            return zodiacSigns[10]; // Aquarius
-        } else {
-            return zodiacSigns[11]; // Pisces
+        // Populate years (from current year down to 100 years ago)
+        const currentYear = new Date().getFullYear();
+        for (let year = currentYear; year >= currentYear - 100; year--) {
+            const option = document.createElement('option');
+            option.value = year;
+            option.textContent = year;
+            yearFragment.appendChild(option);
+        }
+        yearSelect.appendChild(yearFragment);
+        
+        // Pre-populate days (1-31)
+        const dayFragment = document.createDocumentFragment();
+        for (let day = 1; day <= 31; day++) {
+            const option = document.createElement('option');
+            option.value = day;
+            option.textContent = day;
+            dayFragment.appendChild(option);
+        }
+        daySelect.appendChild(dayFragment);
+        
+        // Add event listeners with debouncing
+        let timeout;
+        monthSelect.addEventListener('change', function() {
+            clearTimeout(timeout);
+            timeout = setTimeout(updateDays, 10);
+        });
+        
+        yearSelect.addEventListener('change', function() {
+            clearTimeout(timeout);
+            timeout = setTimeout(updateDays, 10);
+        });
+        
+        // Initial days update
+        updateDays();
+    }
+
+    // Function to update days based on selected month and year
+    function updateDays() {
+        const month = parseInt(monthSelect.value) || 1;
+        const year = parseInt(yearSelect.value) || new Date().getFullYear();
+        
+        // Get number of days in the selected month and year
+        const daysInMonth = new Date(year, month, 0).getDate();
+        
+        // Show/hide day options based on days in month
+        const dayOptions = daySelect.options;
+        
+        // Skip the first option (placeholder)
+        for (let i = 1; i < dayOptions.length; i++) {
+            const day = parseInt(dayOptions[i].value);
+            dayOptions[i].style.display = day <= daysInMonth ? '' : 'none';
+        }
+        
+        // If the currently selected day is greater than days in month, reset selection
+        if (parseInt(daySelect.value) > daysInMonth) {
+            daySelect.selectedIndex = 0;
         }
     }
-    
+
+    // Add event listener to the button
+    checkButton.addEventListener('click', function() {
+        const name = nameInput.value.trim();
+        const month = monthSelect.value;
+        const day = daySelect.value;
+        const year = yearSelect.value;
+        
+        if (!name || !month || !day || !year) {
+            alert("Please enter your name and complete birthdate");
+            return;
+        }
+        
+        // Create date object from selected values
+        const birthdateObj = new Date(year, month - 1, day); // Month is 0-indexed in JavaScript
+        
+        // Get zodiac sign and age
+        const zodiacSign = getZodiacSign(birthdateObj);
+        const age = calculateAge(birthdateObj);
+        
+        // Update the result card
+        updateResultCard(name, zodiacSign, age);
+        
+        // Show the result card with animation
+        resultCard.classList.remove('hidden');
+        resultCard.classList.add('visible');
+    });
+
+    // Function to get zodiac sign based on birthdate
+    function getZodiacSign(birthdate) {
+        const month = birthdate.getMonth() + 1; // JavaScript months are 0-indexed
+        const day = birthdate.getDate();
+        
+        for (const sign of zodiacSigns) {
+            // Handle zodiac signs that span across two years (e.g., Capricorn)
+            if (sign.startDate.month === 12 && sign.endDate.month === 1) {
+                if ((month === 12 && day >= sign.startDate.day) || 
+                    (month === 1 && day <= sign.endDate.day)) {
+                    return sign;
+                }
+            } else {
+                if ((month === sign.startDate.month && day >= sign.startDate.day) || 
+                    (month === sign.endDate.month && day <= sign.endDate.day)) {
+                    return sign;
+                }
+            }
+        }
+        
+        return null; // This should never happen if data is correct
+    }
+
     // Function to calculate age
     function calculateAge(birthdate) {
         const today = new Date();
-        const birthDate = new Date(birthdate);
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const monthDiff = today.getMonth() - birthDate.getMonth();
+        let age = today.getFullYear() - birthdate.getFullYear();
+        const monthDiff = today.getMonth() - birthdate.getMonth();
         
-        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        // If birthday hasn't occurred yet this year, subtract 1 from age
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthdate.getDate())) {
             age--;
         }
         
         return age;
     }
-    
-    // Event listener for submit button
-    submitBtn.addEventListener('click', function() {
-        const name = document.getElementById('name').value.trim();
-        const birthdate = document.getElementById('birthdate').value;
+
+    // Function to update the result card
+    function updateResultCard(name, zodiacSign, age) {
+        // Format date range string
+        const startMonth = new Intl.DateTimeFormat('en-US', { month: 'short' }).format(new Date(2000, zodiacSign.startDate.month - 1, 1));
+        const endMonth = new Intl.DateTimeFormat('en-US', { month: 'short' }).format(new Date(2000, zodiacSign.endDate.month - 1, 1));
         
-        if (!name || !birthdate) {
-            alert('Please enter your name and birthdate');
-            return;
-        }
+        const dateRangeStr = `${startMonth} ${zodiacSign.startDate.day} - ${endMonth} ${zodiacSign.endDate.day}`;
         
-        const birthdateObj = new Date(birthdate);
-        const zodiacSign = getZodiacSign(birthdateObj);
-        const age = calculateAge(birthdate);
-        
-        // Display result
-        displayResult(name, age, zodiacSign);
-    });
-    
-    // Function to display result
-    function displayResult(name, age, zodiacSign) {
-        resultSection.innerHTML = `
-            <h2 class="animate__animated animate__fadeIn">Your Zodiac Information</h2>
-            <div class="user-info animate__animated animate__fadeIn">
-                <p>Hello, <strong>${name}</strong>! You are <strong>${age}</strong> years old.</p>
-            </div>
-            <div class="zodiac-card animate__animated animate__zoomIn">
-                <img src="${zodiacSign.image}" alt="${zodiacSign.name}" class="zodiac-image">
-                <h3 class="zodiac-name">${zodiacSign.name}</h3>
-                <p class="zodiac-date">${zodiacSign.dates}</p>
-                <p><strong>Symbol:</strong> ${zodiacSign.symbol} | <strong>Element:</strong> ${zodiacSign.element}</p>
-                <p class="zodiac-description">${zodiacSign.description}</p>
-            </div>
-        `;
-        
-        resultSection.classList.add('active');
-        
-        // Scroll to result section
-        resultSection.scrollIntoView({ behavior: 'smooth' });
+        // Update DOM elements
+        zodiacIcon.innerHTML = `<i class="${zodiacSign.icon}"></i>`;
+        zodiacName.textContent = zodiacSign.name;
+        zodiacDate.textContent = dateRangeStr;
+        ageResult.textContent = `${name}, your age is ${age} years`;
+        zodiacTraits.textContent = `Traits: ${zodiacSign.traits}`;
     }
 });
