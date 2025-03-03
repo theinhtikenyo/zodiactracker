@@ -1,6 +1,47 @@
 document.addEventListener('DOMContentLoaded', function() {
     const submitBtn = document.getElementById('submit-btn');
     const resultSection = document.getElementById('result-section');
+    const birthYearSelect = document.getElementById('birth-year');
+    const birthMonthSelect = document.getElementById('birth-month');
+    const birthDaySelect = document.getElementById('birth-day');
+    
+    // Populate year dropdown (from current year down to 100 years ago)
+    const currentYear = new Date().getFullYear();
+    for (let year = currentYear; year >= currentYear - 100; year--) {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        birthYearSelect.appendChild(option);
+    }
+    
+    // Function to update days in the day dropdown based on selected month and year
+    function updateDays() {
+        const year = parseInt(birthYearSelect.value) || currentYear;
+        const month = parseInt(birthMonthSelect.value) || 1;
+        
+        // Clear current options except the placeholder
+        while (birthDaySelect.options.length > 1) {
+            birthDaySelect.remove(1);
+        }
+        
+        // Get number of days in the selected month and year
+        const daysInMonth = new Date(year, month, 0).getDate();
+        
+        // Add day options
+        for (let day = 1; day <= daysInMonth; day++) {
+            const option = document.createElement('option');
+            option.value = day;
+            option.textContent = day;
+            birthDaySelect.appendChild(option);
+        }
+    }
+    
+    // Update days when month or year changes
+    birthMonthSelect.addEventListener('change', updateDays);
+    birthYearSelect.addEventListener('change', updateDays);
+    
+    // Initialize days dropdown
+    updateDays();
     
     // Zodiac sign data
     const zodiacSigns = [
@@ -151,14 +192,25 @@ document.addEventListener('DOMContentLoaded', function() {
     // Event listener for submit button
     submitBtn.addEventListener('click', function() {
         const name = document.getElementById('name').value.trim();
-        const birthdate = document.getElementById('birthdate').value;
+        const year = birthYearSelect.value;
+        const month = birthMonthSelect.value;
+        const day = birthDaySelect.value;
         
-        if (!name || !birthdate) {
-            alert('Please enter your name and birthdate');
+        if (!name || !year || !month || !day) {
+            alert('Please enter your name and complete birthdate');
             return;
         }
         
+        // Construct date string in YYYY-MM-DD format for Date object
+        const birthdate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
         const birthdateObj = new Date(birthdate);
+        
+        // Check if date is valid
+        if (isNaN(birthdateObj.getTime())) {
+            alert('Please enter a valid birthdate');
+            return;
+        }
+        
         const zodiacSign = getZodiacSign(birthdateObj);
         const age = calculateAge(birthdate);
         
