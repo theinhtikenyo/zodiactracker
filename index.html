@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zodiac Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Zodiac Tracker <i class="fas fa-star"></i></h1>
+            
+            <div class="input-group">
+                <label for="name">Your Name:</label>
+                <input type="text" id="name" placeholder="Enter your name">
+            </div>
+            
+            <div class="input-group">
+                <label for="birthdate">Your Birthdate:</label>
+                <input type="date" id="birthdate">
+            </div>
+            
+            <button id="check-btn">Check Your Zodiac Sign</button>
+            
+            <div class="result" id="result">
+                <div class="result-card hidden" id="result-card">
+                    <div class="zodiac-icon" id="zodiac-icon">
+                        <i class="fas fa-question"></i>
+                    </div>
+                    <h2 id="zodiac-name">Your Zodiac Sign</h2>
+                    <p id="zodiac-date">Date Range</p>
+                    <p id="age-result">Your age: </p>
+                    <p id="zodiac-traits">Traits: </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
