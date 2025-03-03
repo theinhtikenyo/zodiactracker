@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+
     // Get DOM elements
     const nameInput = document.getElementById('name');
     const monthSelect = document.getElementById('month-select');

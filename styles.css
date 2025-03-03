@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -12,6 +13,7 @@ body {
     justify-content: center;
     align-items: center;
     padding: 20px;
+
 }
 
 .container {
@@ -58,9 +60,11 @@ h1 i {
 
 label {
     display: block;
+
     margin-bottom: 8px;
     color: #555;
     font-weight: 500;
+
 }
 
 input {
