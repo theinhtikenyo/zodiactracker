@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Get DOM elements
     const nameInput = document.getElementById('name');
-    const birthdateInput = document.getElementById('birthdate');
+    const monthSelect = document.getElementById('month-select');
+    const daySelect = document.getElementById('day-select');
+    const yearSelect = document.getElementById('year-select');
     const checkButton = document.getElementById('check-btn');
     const resultCard = document.getElementById('result-card');
     const zodiacIcon = document.getElementById('zodiac-icon');
@@ -9,6 +11,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const zodiacDate = document.getElementById('zodiac-date');
     const ageResult = document.getElementById('age-result');
     const zodiacTraits = document.getElementById('zodiac-traits');
+
+    // Initialize the date picker
+    initDatePicker();
 
     // Zodiac signs data
     const zodiacSigns = [
@@ -98,18 +103,86 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     ];
 
+    // Function to initialize the date picker
+    function initDatePicker() {
+        // Create a document fragment for better performance
+        const yearFragment = document.createDocumentFragment();
+        
+        // Populate years (from current year down to 100 years ago)
+        const currentYear = new Date().getFullYear();
+        for (let year = currentYear; year >= currentYear - 100; year--) {
+            const option = document.createElement('option');
+            option.value = year;
+            option.textContent = year;
+            yearFragment.appendChild(option);
+        }
+        yearSelect.appendChild(yearFragment);
+        
+        // Pre-populate days (1-31)
+        const dayFragment = document.createDocumentFragment();
+        for (let day = 1; day <= 31; day++) {
+            const option = document.createElement('option');
+            option.value = day;
+            option.textContent = day;
+            dayFragment.appendChild(option);
+        }
+        daySelect.appendChild(dayFragment);
+        
+        // Add event listeners with debouncing
+        let timeout;
+        monthSelect.addEventListener('change', function() {
+            clearTimeout(timeout);
+            timeout = setTimeout(updateDays, 10);
+        });
+        
+        yearSelect.addEventListener('change', function() {
+            clearTimeout(timeout);
+            timeout = setTimeout(updateDays, 10);
+        });
+        
+        // Initial days update
+        updateDays();
+    }
+
+    // Function to update days based on selected month and year
+    function updateDays() {
+        const month = parseInt(monthSelect.value) || 1;
+        const year = parseInt(yearSelect.value) || new Date().getFullYear();
+        
+        // Get number of days in the selected month and year
+        const daysInMonth = new Date(year, month, 0).getDate();
+        
+        // Show/hide day options based on days in month
+        const dayOptions = daySelect.options;
+        
+        // Skip the first option (placeholder)
+        for (let i = 1; i < dayOptions.length; i++) {
+            const day = parseInt(dayOptions[i].value);
+            dayOptions[i].style.display = day <= daysInMonth ? '' : 'none';
+        }
+        
+        // If the currently selected day is greater than days in month, reset selection
+        if (parseInt(daySelect.value) > daysInMonth) {
+            daySelect.selectedIndex = 0;
+        }
+    }
+
     // Add event listener to the button
     checkButton.addEventListener('click', function() {
         const name = nameInput.value.trim();
-        const birthdate = birthdateInput.value;
+        const month = monthSelect.value;
+        const day = daySelect.value;
+        const year = yearSelect.value;
         
-        if (!name || !birthdate) {
-            alert("Please enter your name and birthdate");
+        if (!name || !month || !day || !year) {
+            alert("Please enter your name and complete birthdate");
             return;
         }
         
+        // Create date object from selected values
+        const birthdateObj = new Date(year, month - 1, day); // Month is 0-indexed in JavaScript
+        
         // Get zodiac sign and age
-        const birthdateObj = new Date(birthdate);
         const zodiacSign = getZodiacSign(birthdateObj);
         const age = calculateAge(birthdateObj);
         
