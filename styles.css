@@ -212,3 +212,7 @@ button:active {
 #zodiac-traits {
     font-style: italic;
 }
+
+select {
+    appearance: none;
+}
